@@ -41,7 +41,7 @@ def get_formatted_entries(
 ) -> list[os.DirEntry]:
     """filename_template example : TP_{t_id}_{angle}_.tif"""
     entries = []
-    if t_ids != None and angles != None:
+    if t_ids is not None and angles is not None:
         for t_id in t_ids:
             for angle in angles:
                 filename = filename_template.format(t_id=t_id, angle=angle)
@@ -49,7 +49,7 @@ def get_formatted_entries(
                 if entry == []:
                     continue
                 entries.append(entry)
-    if t_ids != None:
+    if t_ids is not None:
         for t_id in t_ids:
             filename = filename_template.format(t_id=t_id)
             entry = get_entries_in_directory(filename)
