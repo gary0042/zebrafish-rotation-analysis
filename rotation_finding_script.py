@@ -132,7 +132,7 @@ if __name__ == "__main__":
             img_A = io.imread(d_A['path'])
             img_A_pp = clip_pad_image(img_A, d_A['alpha'], d_A['padding'], visual=False)
             img_A_interp = create_interpolated_volume(img_A_pp)
-            A_pb = np.sum(spherical_pullback(img_A_interp, d_A['center'], d_A['radius'], thickness=thickness, r_res=64, theta_res=128, phi_res=128), axis=0)
+            A_pb = np.sum(spherical_pullback(img_A_interp, d_A['center'], d_A['radius'], thickness=thickness, r_res=64, theta_res=uv_grid_steps, phi_res=uv_grid_steps), axis=0)
             A_pb = (A_pb - np.mean(A_pb))/np.std(A_pb) # normalize 
             coeffs_A = tcrot.compute_spherical_harmonics_coeffs(A_pb, phi_grid, theta_grid, weights=weights, max_l=ell_max)
         elif i > 0:
@@ -141,7 +141,7 @@ if __name__ == "__main__":
         img_B = io.imread(d_B['path'])
         img_B_pp = clip_pad_image(img_B, d_B['alpha'], d_B['padding'], visual=False)
         img_B_interp = create_interpolated_volume(img_B_pp)
-        B_pb = np.sum(spherical_pullback(img_B_interp, d_B['center'], d_B['radius'], thickness=thickness, r_res=64, theta_res=128, phi_res=128), axis=0)
+        B_pb = np.sum(spherical_pullback(img_B_interp, d_B['center'], d_B['radius'], thickness=thickness, r_res=64, theta_res=uv_grid_steps, phi_res=uv_grid_steps), axis=0)
         B_pb = (B_pb - np.mean(B_pb))/np.std(B_pb) # normalize
         coeffs_B = tcrot.compute_spherical_harmonics_coeffs(B_pb, phi_grid, theta_grid, weights=weights, max_l=ell_max)
 
