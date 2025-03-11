@@ -209,5 +209,26 @@ def clip_pad_image(image, alpha, padding, visual=False):
 
     return img_final
 
+def clip_image(image, alpha, downsampling=1, visual=False):
+    """Clips image at the alpha_th quantile. 
+    Includes option to downsample for calculating quantiles (speeds up calculation immensly for large images).
+      Can visualize if necessary."""
+    q = [alpha, 1 - alpha]
+    mquantiles = stats.mstats.mquantiles(image[::downsampling, ::downsampling, ::downsampling].flatten(), prob=q)
+    image[image<=mquantiles[0]] = 0
+
+    if visual:
+        fig, (ax1, ax2, ax3) = plt.subplots(ncols=3, figsize=(24, 6))
+        ax1.imshow(image[image.shape[0]//2, ...])
+        hist_c, hist_c_centers = exposure.histogram(image)
+        hist, hist_centers = exposure.histogram(image) 
+        ax2.plot(hist_c_centers, hist_c)
+        ax3.plot(hist_centers, hist)
+        ax1.set_title("Clipped image")   
+        ax2.set_title("Clipped histogram")
+        ax3.set_title("Original histogram")    
+
+    return image
+
 
 
